@@ -1,3 +1,30 @@
 from django.test import TestCase
+from core.shortener import Shortener
 
-# Create your tests here.
+
+class TestShortener(TestCase):
+    def test_invalid_url(self):
+        shortener = Shortener("invalid_url")
+        self.assertFalse(shortener.is_valid())
+
+    def test_valid_url(self):
+        valid_urls = ["http://www.google.com/", "www.google.com", "google.com"]
+        for valid_url in valid_urls:
+            shortener = Shortener(valid_url)
+            self.assertTrue(shortener.is_valid())
+
+    def test_same_url(self):
+        url = "www.google.com"
+        shortener_1 = Shortener(url)
+        shortener_2 = Shortener(url)
+        hash_1 = shortener_1.shorten_url()
+        hash_2 = shortener_2.shorten_url()
+        self.assertEqual(hash_1, hash_2)
+
+    def test_create_short_url_method(self):
+        shortener = Shortener("www.google.com")
+        shortener.create_short_url()
+        pk_1 = shortener.url_object.pk
+        shortener.create_short_url()
+        pk_2 = shortener.url_object.pk
+        self.assertEqual(pk_1, pk_2)
