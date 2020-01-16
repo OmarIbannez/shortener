@@ -1,0 +1,24 @@
+{% load static %}
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>Shortener</title>
+      <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" media="screen,projection"/>
+      <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+      {% block extra_css %}{% endblock %}
+      {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+  <div class="container">
+      <div class="row">
+          <main role="main" class="ml-sm-auto">
+              {% block content %}{% endblock %}
+          </main>
+      </div>
+  </div>
+  {% block extra_js %}{% endblock %}
+  </body>
+</html>
