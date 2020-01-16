@@ -11,13 +11,9 @@
       {% block extra_css %}{% endblock %}
       {% block extra_head %}{% endblock %}
   </head>
-  <body>
+  <body class="bg-light">
   <div class="container">
-      <div class="row">
-          <main role="main" class="ml-sm-auto">
-              {% block content %}{% endblock %}
-          </main>
-      </div>
+      {% block content %}{% endblock %}
   </div>
   {% block extra_js %}{% endblock %}
   </body>

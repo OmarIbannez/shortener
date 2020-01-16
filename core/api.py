@@ -12,23 +12,17 @@ from core.serializers import UrlSerializer
 
 @api_view(["POST"])
 def shorten_url(request):
-    url = request.POST.get("url", None)
+    url = request.POST.get("url", None) or request.data.get("url", None)
     if url is None:
         raise DRFValidationError("Missing url parameter.")
 
     shortener = Shortener(url)
     try:
-        hash_ = shortener.shorten_url()
+        shortener.shorten_url()
     except DjangoValidationError:
         raise DRFValidationError("Invalid URL.")
 
-    return Response(
-        {
-            "short_url": "{host}/{hash}".format(
-                host=request.META.get("HTTP_HOST", "localhost:8000"), hash=hash_
-            )
-        }
-    )
+    return Response({"short_url": UrlSerializer(shortener.url_object).data})
 
 
 @api_view(["GET"])
