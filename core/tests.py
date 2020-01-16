@@ -1,5 +1,6 @@
 from django.test import TestCase
 from core.shortener import Shortener
+from core.models import Url
 
 
 class TestShortener(TestCase):
@@ -63,3 +64,41 @@ class TestRedirectUrlApi(TestCase):
     def test_invalid_hash_redirect(self):
         response = self.client.get("/{hash}".format(hash=0))
         self.assertEquals(response.status_code, 404)
+
+
+class TestUrlListView(TestCase):
+    def setUp(self):
+        self.sites = [
+            {"url": "www.google.com", "visits": 100},
+            {"url": "www.twitter.com", "visits": 50},
+            {"url": "www.facebook.com", "visits": 40},
+            {"url": "www.airbnb.com", "visits": 30},
+            {"url": "www.apple.com", "visits": 20},
+            {"url": "www.netflix.com", "visits": 10},
+        ]
+        for site in self.sites:
+            Url(url=site["url"], visits=site["visits"]).save()
+
+    def test_list(self):
+        response = self.client.get("/urls?limit=100")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data["count"], 6)
+        self.assertEquals(response.data["results"][0]["url"], self.sites[0]["url"])
+
+    def test_descending_ordering(self):
+        response = self.client.get("/urls?limit=100&ordering=-visits")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data["results"][0]["url"], self.sites[0]["url"])
+
+    def test_ascending_ordering(self):
+        response = self.client.get("/urls?limit=100&ordering=visits")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data["results"][0]["url"], self.sites[-1]["url"])
+
+    def test_limit(self):
+        response = self.client.get("/urls?limit=1")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(1, len(response.data["results"]))
+        response = self.client.get("/urls?limit=3")
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(3, len(response.data["results"]))

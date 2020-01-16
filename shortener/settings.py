@@ -144,6 +144,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.LimitOffsetPagination'
+    ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     )

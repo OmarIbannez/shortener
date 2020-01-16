@@ -18,10 +18,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from core.api import shorten_url, redirect_hash
+from core.api import shorten_url, redirect_hash, UrlListView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("shorten_url/", shorten_url, name="shorten_url"),
-    url(r'^(?P<hash_>(.*))$', redirect_hash),
+    path("urls", UrlListView.as_view()),
+    url(r"^(?P<hash_>(.*))$", redirect_hash),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
