@@ -8,5 +8,6 @@ class Url(models.Model):
     description = models.TextField(null=True, blank=True)
     thumbnail = models.URLField(null=True, blank=True, max_length=1000)
     visits = models.BigIntegerField(default=0)
+    connection_error = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
