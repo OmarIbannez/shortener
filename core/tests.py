@@ -48,3 +48,18 @@ class TestShortenUrlApi(TestCase):
     def test_shorten_invalid_url(self):
         response = self.client.post("/shorten_url/", {"url": "invalid_url"})
         self.assertEquals(response.status_code, 400)
+
+
+class TestRedirectUrlApi(TestCase):
+    def test_redirect(self):
+        url = "www.google.com"
+        shortener = Shortener(url)
+        hash_ = shortener.shorten_url()
+        response = self.client.get("/{hash}".format(hash=hash_))
+        self.assertEquals(response.status_code, 302)
+        match_redirect_url = url in response.url
+        self.assertTrue(match_redirect_url)
+
+    def test_invalid_hash_redirect(self):
+        response = self.client.get("/{hash}".format(hash=0))
+        self.assertEquals(response.status_code, 404)

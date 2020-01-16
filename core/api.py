@@ -1,8 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError as DRFValidationError
+from rest_framework.exceptions import ValidationError as DRFValidationError, NotFound
 from django.core.exceptions import ValidationError as DjangoValidationError
 from core.shortener import Shortener
+from core.models import Url
+from django.shortcuts import redirect
 
 
 @api_view(["POST"])
@@ -24,3 +26,14 @@ def shorten_url(request):
             )
         }
     )
+
+
+@api_view(["GET"])
+def redirect_hash(request, hash_):
+    try:
+        url = Url.objects.get(hash=hash_)
+    except Url.DoesNotExist:
+        raise NotFound("Invalid short url")
+    url.visits += 1
+    url.save()
+    return redirect(url.url)
