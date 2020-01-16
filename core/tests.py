@@ -28,3 +28,23 @@ class TestShortener(TestCase):
         shortener.create_short_url()
         pk_2 = shortener.url_object.pk
         self.assertEqual(pk_1, pk_2)
+
+
+class TestShortenUrlApi(TestCase):
+    def test_shorten_url(self):
+        response = self.client.post("/shorten_url/", {"url": "www.google.com"})
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data["short_url"], "localhost:8000/1")
+
+    def test_shorten_url_same_url(self):
+        response = self.client.post("/shorten_url/", {"url": "www.google.com"})
+        self.assertEquals(response.status_code, 200)
+        url_1 = response.data["short_url"]
+        response = self.client.post("/shorten_url/", {"url": "www.google.com"})
+        self.assertEquals(response.status_code, 200)
+        url_2 = response.data["short_url"]
+        self.assertEqual(url_1, url_2)
+
+    def test_shorten_invalid_url(self):
+        response = self.client.post("/shorten_url/", {"url": "invalid_url"})
+        self.assertEquals(response.status_code, 400)

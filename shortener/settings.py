@@ -39,7 +39,10 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-THIRD_PARTY_APPS = ()
+THIRD_PARTY_APPS = (
+    'django_extensions',
+    'rest_framework'
+)
 
 LOCAL_APPS = (
     'core',
@@ -139,3 +142,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
