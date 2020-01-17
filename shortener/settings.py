@@ -93,7 +93,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'shortener',
         'USER': 'shortener',
-        'PASSWORD': 'shortener'
+        'PASSWORD': 'shortener',
+        'HOST': 'localhost',
     }
 }
 
