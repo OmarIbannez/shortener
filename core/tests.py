@@ -35,7 +35,7 @@ class TestShortenUrlApi(TestCase):
     def test_shorten_url(self):
         response = self.client.post("/shorten_url/", {"url": "www.google.com"})
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.data["short_url"], "localhost:8000/1")
+        self.assertEquals(response.data["short_url"]["hash"], "1")
 
     def test_shorten_url_same_url(self):
         response = self.client.post("/shorten_url/", {"url": "www.google.com"})
