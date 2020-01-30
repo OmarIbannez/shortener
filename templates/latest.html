@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_js %}
+  <script type="text/javascript">
+    if (!window.config) {
+      window.config = {};
+    }
+    window.config.urlListApi = "{% url 'url-list' %}";
+    window.config.csrf_token = '{{ csrf_token }}';
+  </script>
+  <script src="{% static "js/url/latest/components/latest.js" %}"></script>
+  <script src="{% static "js/url/latest/main.js" %}"></script>
+{% endblock %}
+{% block content %}
+
+<div id="list-latest-app" class="container">
+  <div class="row">
+    <div class="ml-sm-auto mt-5 mb-5">
+      <a href="/" class="btn btn-outline-primary">Shorten your link</a>
+    </div>
+  </div>
+ <list-latest></list-latest>
+</div>
+
+<script type="text/x-template" id="list-latest">
+  <div class="row">
+    <div class="col-md-3" v-for="url in urls" style="max-height: 550px;">
+      <div class="card mb-4 shadow-sm">
+        <img :src="url.thumbnail" width="100%" height="200px">
+        <div class="card-body" style="height: 150px">
+          <p class="card-text" style="height: 68px; overflow: hidden;"><% url.title %></p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a type="button" class="btn btn-sm btn-outline-secondary" :href="url.hash" target="_blank">Visit</a>
+            </div>
+            <small class="text-muted"><% url.visits%> visits</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+{% endblock %}

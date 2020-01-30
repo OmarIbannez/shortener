@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
 from core.api import shorten_url, redirect_hash, UrlListView
-from core.views import Top100View, ShortenView
+from core.views import Top100View, ShortenView, LatestView
 
 urlpatterns = [
     url(r"^$", ShortenView.as_view(), name="shorten"),
@@ -27,5 +27,6 @@ urlpatterns = [
     path("shorten_url/", shorten_url, name="shorten-url"),
     path("urls", UrlListView.as_view(), name="url-list"),
     path("top100", Top100View.as_view(), name="top100"),
+    path("latest", LatestView.as_view(), name="latest"),
     url(r"^(?P<hash_>(.*))$", redirect_hash),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -40,4 +40,4 @@ class UrlListView(ListAPIView):
     queryset = Url.objects.all()
     serializer_class = UrlSerializer
     filter_backends = [OrderingFilter]
-    ordering_fields = ["visits"]
+    ordering_fields = ["visits", "date_added"]

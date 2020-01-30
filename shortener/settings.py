@@ -48,7 +48,6 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'core',
     'shortener',
-    'webapp',
 )
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
